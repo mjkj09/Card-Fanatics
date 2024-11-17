@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/cardfinder.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,594;1,594&family=Poppins:ital,wght@0,400;1,600&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/4dc72001e9.js" crossorigin="anonymous"></script>
+    <title>Card Finder</title>
+</head>
+<body>
+    <div class="main-page">
+        <nav class="navbar">
+            <i class="fa-solid fa-bars" id="menu-toggle" style="color: #f6fcdf;"></i>
+            <img src="../img/logo.svg" class="navbar__logo" alt="Logo">
+        </nav>
+
+        <div id="fullscreen-menu" class="fullscreen-menu">
+            <i class="fa-solid fa-times" id="close-menu" style="color: #f6fcdf;"></i>
+            <ul class="menu-options">
+                <li>Card search</li>
+                <li>My personal data</li>
+                <li>Cards for trade</li>
+                <li>Wishlist</li>
+            </ul>
+        </div>
+
+        <main class="content">
+            <header class="search-bar">
+                <form>
+                    <input placeholder="Search for a card" type="text" name="search" id="search">
+                    <i class="fa-solid fa-search" style="color: #f6fcdf;"></i>
+                </form>
+                <button class="filter-button">Filters</button>
+            </header>
+
+            <section class="results">
+                <div class="result-item">
+                    <div class="result-item__details">
+                        <p>Card Code: 12345</p>
+                        <p>City: Kraków</p>
+                        <p>Available: Yes</p>
+                    </div>
+                </div>
+                <div class="result-item">
+                    <div class="result-item__details">
+                        <p>Card Code: 54321</p>
+                        <p>City: Warszawa Gdanska</p>
+                        <p>Available: No</p>
+                    </div>
+                </div>
+                <div class="result-item">
+                    <div class="result-item__details">
+                        <p>Card Code: 67890</p>
+                        <p>City: Gdańsk</p>
+                        <p>Available: Yes</p>
+                    </div>
+                </div>
+                <div class="result-item">
+                    <div class="result-item__details">
+                        <p>Card Code: 09876</p>
+                        <p>City: Poznań</p>
+                        <p>Available: Yes</p>
+                    </div>
+                </div>
+                <div class="result-item">
+                    <div class="result-item__details">
+                        <p>Card Code: 11223</p>
+                        <p>City: Łódź</p>
+                        <p>Available: No</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="../js/menu.js"></script>
+</body>
+</html>
