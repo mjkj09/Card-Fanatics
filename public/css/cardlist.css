@@ -1,0 +1,57 @@
+
+.page-header h1 {
+    padding-bottom: 2rem;
+}
+
+.form-container {
+    padding: 0 2rem 2rem;
+}
+
+
+
+
+/* Card List */
+.card-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem;
+    width: 70vw;
+    max-width: 600px; 
+    min-width: 300px; 
+    margin: 0 auto; 
+}
+
+.card-list ul {
+    list-style: none;
+    width: 100%;
+}
+
+.card-list li {
+    background-color: #31511e;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    color: #f6fcdf;
+    gap: 1rem;
+    word-wrap: break-word; 
+    overflow-wrap: anywhere;
+}
+
+.card-list li .remove-button {
+    background-color: #859f3d;
+    color: #1a1a19;
+    border: none;
+    border-radius: 5px;
+    padding: 0.5rem 1rem; 
+    cursor: pointer;
+    text-align: center;
+    min-width: 90px;
+    margin-left: auto; 
+}
+
+.card-list li .remove-button:hover {
+    background-color: #31511e;
+}
