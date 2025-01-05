@@ -1,10 +1,12 @@
 <?php
 
+namespace controllers;
+
 require_once 'AppController.php';
 
 class DefaultController extends AppController
 {
-    public function login()
+    public function index()
     {
         $this->render('login');
     }
@@ -14,9 +16,9 @@ class DefaultController extends AppController
         $this->render('register');
     }
 
-    public function cardfinder()
+    public function cardsearch()
     {
-        $this->render('cardfinder');
+        $this->render('cardsearch');
     }
 
     public function personaldata()
