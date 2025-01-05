@@ -23,10 +23,10 @@
         <div id="fullscreen-menu" class="fullscreen-menu">
             <i class="fa-solid fa-times" id="close-menu" style="color: #f6fcdf;"></i>
             <ul class="menu-options">
-                <li><a href="cardfinder.html">CARD SEARCH</a></li>
-                <li><a href="personaldata.html">MY PERSONAL DATA</a></li>
-                <li><a href="cardsfortrade.html">CARDS FOR TRADE</a></li>
-                <li><a href="wishlist.html">WISHLIST</a></li>
+                <li><a href="cardsearch">CARD SEARCH</a></li>
+                <li><a href="personaldata">MY PERSONAL DATA</a></li>
+                <li><a href="cardsfortrade">CARDS FOR TRADE</a></li>
+                <li><a href="wishlist">WISHLIST</a></li>
             </ul>
         </div>
 

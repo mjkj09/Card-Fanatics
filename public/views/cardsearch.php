@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="public/css/common.css">
-    <link rel="stylesheet" href="public/css/cardfinder.css">
+    <link rel="stylesheet" href="public/css/cardsearch.css">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,594;1,594&family=Poppins:ital,wght@0,400;1,600&display=swap" rel="stylesheet">
     <script src="public/js/menu.js"></script>
     <script src="https://kit.fontawesome.com/4dc72001e9.js" crossorigin="anonymous"></script>
@@ -20,10 +20,10 @@
         <div id="fullscreen-menu" class="fullscreen-menu">
             <i class="fa-solid fa-times" id="close-menu" style="color: #f6fcdf;"></i>
             <ul class="menu-options">
-                <li><a href="cardfinder.html">CARD SEARCH</a></li>
-                <li><a href="personaldata.html">MY PERSONAL DATA</a></li>
-                <li><a href="cardsfortrade.html">CARDS FOR TRADE</a></li>
-                <li><a href="wishlist.html">WISHLIST</a></li>
+                <li><a href="cardsearch">CARD SEARCH</a></li>
+                <li><a href="personaldata">MY PERSONAL DATA</a></li>
+                <li><a href="cardsfortrade">CARDS FOR TRADE</a></li>
+                <li><a href="wishlist">WISHLIST</a></li>
             </ul>
         </div>
 

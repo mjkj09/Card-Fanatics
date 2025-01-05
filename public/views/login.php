@@ -21,7 +21,18 @@
             <div class="login-box">
                 <h2 class="login-box__title">Login</h2>
                 <p class="login-box__subtitle">Welcome back! Please login to your account.</p>
-                <form class="login-box__form" action="#" method="POST">
+                <form class="login-box__form" action="login" method="POST">
+
+                    <div class="messages">
+                        <?php if (isset($messages) && !empty($messages)): ?>
+                            <div class="messages">
+                                <?php foreach ($messages as $message): ?>
+                                    <p><?= $message ?></p>
+                                <?php endforeach; ?>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+
                     <div class="form__input-group">
                         <i class="fa-solid fa-envelope fa-sm" style="color: #f6fcdf;"></i>
                         <input type="email" id="email" name="email" class="form__input" placeholder="Email" required>
