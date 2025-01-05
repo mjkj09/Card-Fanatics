@@ -196,8 +196,10 @@ html {
     background-color: #31511e;
 }
 
-
-
+.messages {
+    color: #f6fcdf;
+    margin-bottom: 20px;
+}
 
 
 /* Media query for desktop */
