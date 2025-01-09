@@ -7,8 +7,25 @@
     padding: 0 2rem 2rem;
 }
 
+/* Quantity buttons */
+.qty-down,
+.qty-up {
+    background-color: #859f3d;
+    color: #1a1a19;
+    border: none;
+    border-radius: 5px;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    text-align: center;
+    min-width: 30px; /* nieco szerzej niż Remove */
+    margin-left: 0.5rem;
+}
 
-
+.qty-down:hover,
+.qty-up:hover {
+    background-color: #31511e;
+    color: #f6fcdf;
+}
 
 /* Card List */
 .card-list {
