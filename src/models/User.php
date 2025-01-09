@@ -4,6 +4,7 @@ namespace models;
 
 class User
 {
+    private $id;
     private $email;
     private $password;
     private $name;
@@ -11,14 +12,25 @@ class User
     private $phone;
     private $instagram;
 
-    public function __construct(string $email, string $password, string $name, string $surname)
-    {
+    public function __construct(
+        int $id,
+        string $email,
+        string $password,
+        string $name,
+        string $surname
+    ) {
+        $this->id = $id;
         $this->email = $email;
         $this->password = $password;
         $this->name = $name;
         $this->surname = $surname;
         $this->phone = null;
         $this->instagram = null;
+    }
+
+    public function getId(): int
+    {
+        return $this->id;
     }
 
     public function getEmail(): string
@@ -61,22 +73,22 @@ class User
         $this->surname = $surname;
     }
 
-    public function getPhone(): string
+    public function getPhone(): ?string
     {
         return $this->phone;
     }
 
-    public function setPhone(string $phone)
+    public function setPhone(?string $phone)
     {
         $this->phone = $phone;
     }
 
-    public function getInstagram(): string
+    public function getInstagram(): ?string
     {
         return $this->instagram;
     }
 
-    public function setInstagram(string $instagram)
+    public function setInstagram(?string $instagram)
     {
         $this->instagram = $instagram;
     }
