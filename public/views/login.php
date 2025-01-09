@@ -46,7 +46,10 @@
                     <button type="submit" class="form__button">Login</button>
                 </form>
 
-                <p class="login-box__signup-text">New User? <a href="#" class="login-box__signup-link">Sign up</a></p>
+                <p class="login-box__signup-text">
+                    New User?
+                    <a href="register" class="login-box__signup-link">Sign up</a>
+                </p>
             </div>
         </section>
 

@@ -24,8 +24,10 @@
                 <li><a href="personaldata">MY PERSONAL DATA</a></li>
                 <li><a href="cardsfortrade">CARDS FOR TRADE</a></li>
                 <li><a href="wishlist">WISHLIST</a></li>
+                <li><a href="logout">LOGOUT</a></li>
             </ul>
         </div>
+
 
         <main class="content">
             <header class="search-bar">
