@@ -202,6 +202,13 @@ html {
 }
 
 
+
+/* Datalist styling */
+[list]::-webkit-calendar-picker-indicator {
+    opacity: 0;
+    cursor: text;
+}
+
 /* Media query for desktop */
 @media (min-width:1000px) {
     .main-page {

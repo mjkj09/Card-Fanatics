@@ -22,6 +22,7 @@ Routing::post('removeCardFromWishlist', 'CardController');
 Routing::get('getTradeCards', 'CardController');
 Routing::get('getWishlistCards', 'CardController');
 Routing::post('updateTradeQuantity', 'CardController');
+Routing::get('getUserCollections', 'UserDataController');
 
 Routing::post('login', 'SecurityController');
 Routing::get('registerUser', 'SecurityController');

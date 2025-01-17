@@ -2,6 +2,7 @@
 
 namespace controllers;
 
+use repository\CollectionRepository;
 use repository\UserRepository;
 
 require_once __DIR__ . '/AppController.php';
@@ -80,4 +81,31 @@ class UserDataController extends AppController
         header('Content-Type: application/json; charset=utf-8');
         echo json_encode(['status' => 'success', 'message' => 'Data updated']);
     }
+
+    public function getUserCollections()
+    {
+        if (!$this->isGet()) {
+            http_response_code(405);
+            return;
+        }
+
+        session_start();
+        $userId = $_SESSION['user_id'] ?? null;
+
+        if (!$userId) {
+            header('Content-Type: application/json; charset=utf-8');
+            echo json_encode(['status' => 'error', 'message' => 'User not logged in']);
+            return;
+        }
+
+        $collectionRepo = new CollectionRepository();
+        $collections = $collectionRepo->getCollectionsByUserId($userId);
+
+        header('Content-Type: application/json; charset=utf-8');
+        echo json_encode(['status' => 'success', 'collections' => $collections]);
+
+        error_log('getUserCollections: Start');
+        error_log('User ID: ' . $_SESSION['user_id'] ?? 'No user ID');
+    }
+
 }

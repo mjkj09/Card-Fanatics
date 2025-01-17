@@ -40,7 +40,8 @@
                 <input type="text" id="cardCode" name="cardCode" required>
 
                 <label for="collectionName">Collection *</label>
-                <input type="text" id="collectionName" name="collectionName" required>
+                <input type="text" id="collectionName" name="collectionName" list="collectionSuggestions" required>
+                <datalist id="collectionSuggestions"></datalist>
 
                 <label for="parallel">Parallel (optional)</label>
                 <input type="text" id="parallel" name="parallel" placeholder="e.g. Blue Crystal">

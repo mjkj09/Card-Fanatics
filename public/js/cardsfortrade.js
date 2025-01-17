@@ -3,6 +3,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const listContainer = document.getElementById("trade-list");
     const messagesDiv = document.getElementById("messages");
 
+    const collectionInput = document.getElementById("collectionName");
+    const dataList = document.createElement("datalist");
+    dataList.id = "collectionSuggestions";
+    collectionInput.setAttribute("list", "collectionSuggestions");
+    collectionInput.parentNode.appendChild(dataList);
+
     init();
 
     form.addEventListener("submit", (event) => {
@@ -26,7 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         fetch("addCardForTrade", {
             method: "POST",
-            body: formData
+            body: formData,
         })
             .then((res) => res.json())
             .then((data) => {
@@ -34,6 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     showMessage(data.message, "success");
                     form.reset();
                     loadTradeCards();
+                    updateCollectionSuggestions();
                 } else {
                     showMessage(data.message || "Error adding card!", "error");
                 }
@@ -43,6 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function init() {
         loadTradeCards();
+        updateCollectionSuggestions();
     }
 
     function loadTradeCards() {
@@ -62,18 +70,17 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function addCardToList(card) {
-        const {code, collection, parallel, quantity} = card;
+        const { code, collection, parallel, quantity } = card;
         const qtyNum = parseInt(quantity, 10);
-
         let parallelLabel = parallel ? `(${parallel}) ` : "";
 
         const li = document.createElement("li");
         li.innerHTML = `
-    <span>${code} - ${collection} ${parallelLabel} x${qtyNum}</span>
-    <button class="qty-down">-</button>
-    <button class="qty-up">+</button>
-    <button class="remove-button">Remove</button>
-  `;
+            <span>${code} - ${collection} ${parallelLabel} x${qtyNum}</span>
+            <button class="qty-down">-</button>
+            <button class="qty-up">+</button>
+            <button class="remove-button">Remove</button>
+        `;
 
         const downBtn = li.querySelector(".qty-down");
         const upBtn = li.querySelector(".qty-up");
@@ -107,7 +114,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         fetch("updateTradeQuantity", {
             method: "POST",
-            body: formData
+            body: formData,
         })
             .then((res) => res.json())
             .then((data) => {
@@ -129,13 +136,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
         fetch("removeCardForTrade", {
             method: "POST",
-            body: formData
+            body: formData,
         })
             .then((res) => res.json())
             .then((data) => {
                 if (data.status === "success") {
                     showMessage(data.message, "success");
                     loadTradeCards();
+                    updateCollectionSuggestions();
                 } else {
                     showMessage(data.message || "Error removing card!", "error");
                 }
@@ -143,10 +151,27 @@ document.addEventListener("DOMContentLoaded", () => {
             .catch((err) => showMessage(err, "error"));
     }
 
+    function updateCollectionSuggestions() {
+        fetch("getUserCollections")
+            .then((res) => res.json())
+            .then((data) => {
+                if (data.status === "success") {
+                    const dataList = document.getElementById("collectionSuggestions");
+                    dataList.innerHTML = "";
+                    data.collections.forEach((collection) => {
+                        const option = document.createElement("option");
+                        option.value = collection;
+                        dataList.appendChild(option);
+                    });
+                }
+            })
+            .catch((err) => console.error("Error updating suggestions:", err));
+    }
+
     function showMessage(msg, type) {
         messagesDiv.innerHTML = `<p style="color: ${type === "error" ? "red" : "lightgreen"}">${msg}</p>`;
         setTimeout(() => {
             messagesDiv.innerHTML = "";
-        }, 1000);
+        }, 3000);
     }
 });

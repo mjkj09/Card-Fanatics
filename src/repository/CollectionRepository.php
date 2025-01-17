@@ -2,6 +2,8 @@
 
 namespace repository;
 
+use PDO;
+
 require_once "Repository.php";
 
 class CollectionRepository extends Repository
@@ -35,4 +37,21 @@ class CollectionRepository extends Repository
         $id = $stmt->fetchColumn();
         return $id ?: null;
     }
+
+    public function getCollectionsByUserId(int $userId): array
+    {
+        $conn = $this->database->connect();
+        $stmt = $conn->prepare("
+        SELECT DISTINCT col.name
+        FROM collections col
+        JOIN cards c ON c.id_collection = col.id
+        JOIN users_cards uc ON uc.id_card = c.id
+        WHERE uc.id_user = :userId
+    ");
+        $stmt->bindParam(':userId', $userId);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_COLUMN);
+    }
+
 }
