@@ -64,4 +64,33 @@ class CardRepository extends Repository
         $id = $stmt->fetchColumn();
         return $id ?: null;
     }
+
+    public function searchTradeCardsAllFields(string $query): array
+    {
+        $conn = $this->database->connect();
+        $pattern = '%'.strtoupper($query).'%';
+
+        $sql = "
+    SELECT
+        c.code,
+        c.parallel,
+        col.name AS collection,
+        uc.quantity
+    FROM users_cards uc
+    JOIN cards c ON uc.id_card = c.id
+    JOIN collections col ON c.id_collection = col.id
+    WHERE uc.card_type = 'trade'
+      AND (
+           UPPER(c.code) ILIKE :pattern
+        OR UPPER(col.name) ILIKE :pattern
+        OR UPPER(c.parallel) ILIKE :pattern
+      )
+    ORDER BY c.code
+    ";
+
+        $stmt = $conn->prepare($sql);
+        $stmt->bindValue(':pattern', $pattern);
+        $stmt->execute();
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
 }

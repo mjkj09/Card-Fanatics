@@ -178,4 +178,21 @@ class CardController extends AppController
         header('Content-Type: application/json; charset=utf-8');
         echo json_encode($result);
     }
+
+    public function searchTradeCardsAllFields()
+    {
+        if (!$this->isGet()) {
+            http_response_code(405);
+            return;
+        }
+
+        $query = $_GET['query'] ?? '';
+        $cards = $this->cardRepo->searchTradeCardsAllFields($query);
+
+        header('Content-Type: application/json; charset=utf-8');
+        echo json_encode([
+            'status' => 'success',
+            'cards'  => $cards
+        ]);
+    }
 }
