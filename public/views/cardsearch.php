@@ -44,8 +44,15 @@
                    style="color: #859f3d;">
                 </i>
             </form>
-            <button class="filter-button">Filters</button>
+
+            <button class="filter-button" id="show-filters-btn">Filters</button>
         </header>
+
+        <div id="filters-panel" style="display:none; margin-top:1rem;">
+            <div id="filters-container">
+                <!-- Checkboxes dynamically from JS -->
+            </div>
+        </div>
 
         <section class="results" id="results-container">
             <!-- Dynamically from JS -->
