@@ -39,7 +39,8 @@
     border-radius: 5px;
     display: inline-block;
     min-width: 165px;
-    margin-top: 1rem
+    margin-top: 1rem;
+    cursor: pointer;
 }
 
 
@@ -81,6 +82,33 @@
 .pagination {
     text-align: center;
     margin-bottom: 2rem;
+}
+
+.pagination-btn {
+    padding: 0.5rem 1rem;
+    margin: 0.5rem;
+    background-color: #859f3d;
+    color: #1a1a19;
+    border: none;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.pagination-btn:hover {
+    background-color: #31511e;
+}
+
+.pagination-btn:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.prev-btn {
+    border-radius: 5px 0 0 5px;
+}
+
+.next-btn {
+    border-radius: 0 5px 5px 0;
 }
 
 

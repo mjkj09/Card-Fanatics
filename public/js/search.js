@@ -31,8 +31,11 @@ document.addEventListener("DOMContentLoaded", () => {
     doSearch();
 
     showFiltersBtn.addEventListener("click", () => {
-        filtersPanel.style.display =
-            (filtersPanel.style.display === "none") ? "block" : "none";
+        if (!filtersPanel.style.display || filtersPanel.style.display === "none") {
+            filtersPanel.style.display = "block";
+        } else {
+            filtersPanel.style.display = "none";
+        }
     });
 
     function doSearch() {
@@ -180,7 +183,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const prevBtn = document.createElement("button");
         prevBtn.textContent = "Prev";
-        prevBtn.style.marginRight = "1rem";
+        prevBtn.classList.add("pagination-btn", "prev-btn");
         prevBtn.disabled = (currentPage === 1);
         prevBtn.addEventListener("click", () => {
             if (currentPage > 1) {
@@ -200,7 +203,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const nextBtn = document.createElement("button");
         nextBtn.textContent = "Next";
-        nextBtn.style.marginLeft = "1rem";
+        nextBtn.classList.add("pagination-btn", "next-btn");
         nextBtn.disabled = (currentPage === totalPages);
         nextBtn.addEventListener("click", () => {
             if (currentPage < totalPages) {
