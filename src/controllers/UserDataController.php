@@ -4,6 +4,7 @@ namespace controllers;
 
 use repository\CollectionRepository;
 use repository\UserRepository;
+use repository\UsersCardsRepository;
 
 require_once __DIR__ . '/AppController.php';
 require_once __DIR__ . '/../repository/UserRepository.php';
@@ -26,7 +27,7 @@ class UserDataController extends AppController
         }
 
         session_start();
-        if(!isset($_SESSION['user_id'])){
+        if (!isset($_SESSION['user_id'])) {
             header("Location: /");
             exit;
         }
@@ -41,12 +42,12 @@ class UserDataController extends AppController
 
         header('Content-Type: application/json; charset=utf-8');
         echo json_encode([
-            'status'   => 'success',
-            'data'     => [
-                'email'     => $user->getEmail(),
-                'name'      => $user->getName(),
-                'surname'   => $user->getSurname(),
-                'phone'     => $user->getPhone(),
+            'status' => 'success',
+            'data' => [
+                'email' => $user->getEmail(),
+                'name' => $user->getName(),
+                'surname' => $user->getSurname(),
+                'phone' => $user->getPhone(),
                 'instagram' => $user->getInstagram()
             ]
         ]);
@@ -63,9 +64,9 @@ class UserDataController extends AppController
         $userId = $_SESSION['user_id'] ?? 1;
 
         // Pobierz dane z POST
-        $name      = $_POST['name']      ?? '';
-        $surname   = $_POST['surname']   ?? '';
-        $phone     = $_POST['phone']     ?? '';
+        $name = $_POST['name'] ?? '';
+        $surname = $_POST['surname'] ?? '';
+        $phone = $_POST['phone'] ?? '';
         $instagram = $_POST['instagram'] ?? '';
 
         $user = $this->userRepository->getUserById($userId);
@@ -108,4 +109,34 @@ class UserDataController extends AppController
         error_log('User ID: ' . $_SESSION['user_id'] ?? 'No user ID');
     }
 
+    public function userProfile()
+    {
+        if (!$this->isGet()) {
+            http_response_code(405);
+            return;
+        }
+
+        $userIdToShow = $_GET['userId'] ?? null;
+        if (!$userIdToShow) {
+            echo "No userId provided";
+            return;
+        }
+
+        $user = $this->userRepository->getUserById((int)$userIdToShow);
+
+        if (!$user) {
+            echo "User not found";
+            return;
+        }
+
+        $usersCardsRepo = new UsersCardsRepository();
+        $tradeCards = $usersCardsRepo->fetchCardsByType($userIdToShow, 'trade');
+        $wishlistCards = $usersCardsRepo->fetchCardsByType($userIdToShow, 'wishlist');
+
+        $this->render('userprofile', [
+            'user' => $user,
+            'tradeCards' => $tradeCards,
+            'wishlist' => $wishlistCards
+        ]);
+    }
 }

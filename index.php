@@ -24,6 +24,7 @@ Routing::get('getWishlistCards', 'CardController');
 Routing::post('updateTradeQuantity', 'CardController');
 Routing::get('getUserCollections', 'UserDataController');
 Routing::get('searchTradeCardsAllFields', 'CardController');
+Routing::get('userProfile', 'UserDataController');
 
 Routing::post('login', 'SecurityController');
 Routing::get('registerUser', 'SecurityController');

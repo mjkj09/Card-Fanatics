@@ -1,18 +1,18 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const searchForm       = document.getElementById("search-form");
-    const searchInput      = document.getElementById("search-input");
-    const searchIcon       = document.getElementById("search-icon");
+    const searchForm = document.getElementById("search-form");
+    const searchInput = document.getElementById("search-input");
+    const searchIcon = document.getElementById("search-icon");
     const resultsContainer = document.getElementById("results-container");
 
-    const showFiltersBtn   = document.getElementById("show-filters-btn");
-    const filtersPanel     = document.getElementById("filters-panel");
+    const showFiltersBtn = document.getElementById("show-filters-btn");
+    const filtersPanel = document.getElementById("filters-panel");
     const filtersContainer = document.getElementById("filters-container");
 
-    const paginationDiv    = document.getElementById("pagination");
+    const paginationDiv = document.getElementById("pagination");
 
     let allCards = [];
     let uniqueCollections = [];
-    let uniqueParallels   = [];
+    let uniqueParallels = [];
 
     const pageSize = 20;
     let currentPage = 1;
@@ -63,7 +63,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!cards.length) return;
 
         uniqueCollections = [...new Set(cards.map(c => c.collection))];
-        uniqueParallels   = [...new Set(cards.map(c => c.parallel))];
+        uniqueParallels = [...new Set(cards.map(c => c.parallel))];
 
         const colH3 = document.createElement("h3");
         colH3.textContent = "Collections";
@@ -139,7 +139,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function displayResults(cards) {
         resultsContainer.innerHTML = "";
-        paginationDiv.innerHTML    = "";
+        paginationDiv.innerHTML = "";
 
         if (!cards.length) {
             resultsContainer.innerHTML = "<p>No results found</p>";
@@ -157,27 +157,33 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         const startIndex = (currentPage - 1) * pageSize;
-        const endIndex   = startIndex + pageSize;
-        const pageCards  = cards.slice(startIndex, endIndex);
+        const endIndex = startIndex + pageSize;
+        const pageCards = cards.slice(startIndex, endIndex);
 
         pageCards.forEach(card => {
             const item = document.createElement("div");
             item.classList.add("result-item");
+
             item.innerHTML = `
                 <div class="result-item__details">
                     <p>Code: ${card.code}</p>
                     <p>Collection: ${card.collection}</p>
                     <p>Parallel: ${card.parallel || '-'}</p>
                     <p>Quantity: ${card.quantity}</p>
+                    <button class="profile-button"
+                            onclick="window.open('userProfile?userId=${card.user_id}', '_blank');"
+                    >
+                        View Profile
+                    </button>
                 </div>
             `;
             resultsContainer.appendChild(item);
         });
 
+
         renderPaginationControls(totalPages);
     }
 
-    // --- Rysujemy prev/next i ewentualnie info o stronach ---
     function renderPaginationControls(totalPages) {
         if (totalPages <= 1) return;
 

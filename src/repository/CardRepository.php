@@ -71,21 +71,22 @@ class CardRepository extends Repository
         $pattern = '%'.strtoupper($query).'%';
 
         $sql = "
-    SELECT
-        c.code,
-        c.parallel,
-        col.name AS collection,
-        uc.quantity
-    FROM users_cards uc
-    JOIN cards c ON uc.id_card = c.id
-    JOIN collections col ON c.id_collection = col.id
-    WHERE uc.card_type = 'trade'
-      AND (
-           UPPER(c.code) ILIKE :pattern
-        OR UPPER(col.name) ILIKE :pattern
-        OR UPPER(c.parallel) ILIKE :pattern
-      )
-    ORDER BY c.code
+        SELECT
+            uc.id_user AS user_id,
+            c.code,
+            c.parallel,
+            col.name AS collection,
+            uc.quantity
+        FROM users_cards uc
+        JOIN cards c ON uc.id_card = c.id
+        JOIN collections col ON c.id_collection = col.id
+        WHERE uc.card_type = 'trade'
+          AND (
+               UPPER(c.code) ILIKE :pattern
+            OR UPPER(col.name) ILIKE :pattern
+            OR UPPER(c.parallel) ILIKE :pattern
+          )
+        ORDER BY c.code
     ";
 
         $stmt = $conn->prepare($sql);

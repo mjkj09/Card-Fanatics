@@ -40,6 +40,12 @@ class DefaultController extends AppController
         $this->render('wishlist');
     }
 
+    public function userprofile()
+    {
+        $this->ensureLoggedIn();
+        $this->render('userprofile');
+    }
+
     private function ensureLoggedIn()
     {
         session_start();
