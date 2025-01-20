@@ -8,28 +8,31 @@ document.addEventListener("DOMContentLoaded", () => {
     const filtersPanel     = document.getElementById("filters-panel");
     const filtersContainer = document.getElementById("filters-container");
 
+    const paginationDiv    = document.getElementById("pagination");
+
     let allCards = [];
     let uniqueCollections = [];
     let uniqueParallels   = [];
 
+    const pageSize = 20;
+    let currentPage = 1;
+
     searchForm.addEventListener("submit", (event) => {
         event.preventDefault();
+        currentPage = 1;
         doSearch();
     });
-
     searchIcon.addEventListener("click", (event) => {
         event.preventDefault();
+        currentPage = 1;
         doSearch();
     });
 
     doSearch();
 
     showFiltersBtn.addEventListener("click", () => {
-        if (filtersPanel.style.display === "none") {
-            filtersPanel.style.display = "block";
-        } else {
-            filtersPanel.style.display = "none";
-        }
+        filtersPanel.style.display =
+            (filtersPanel.style.display === "none") ? "block" : "none";
     });
 
     function doSearch() {
@@ -39,8 +42,8 @@ document.addEventListener("DOMContentLoaded", () => {
             .then(data => {
                 if (data.status === 'success') {
                     allCards = data.cards;
+                    currentPage = 1;
                     displayResults(allCards);
-
                     buildFilters(allCards);
                 } else {
                     resultsContainer.innerHTML = "<p>Error from server</p>";
@@ -54,10 +57,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function buildFilters(cards) {
         filtersContainer.innerHTML = "";
-
-        if (!cards.length) {
-            return;
-        }
+        if (!cards.length) return;
 
         uniqueCollections = [...new Set(cards.map(c => c.collection))];
         uniqueParallels   = [...new Set(cards.map(c => c.parallel))];
@@ -99,6 +99,7 @@ document.addEventListener("DOMContentLoaded", () => {
         filtersContainer.appendChild(applyBtn);
 
         applyBtn.addEventListener("click", () => {
+            currentPage = 1;
             applyFilters();
         });
     }
@@ -106,7 +107,9 @@ document.addEventListener("DOMContentLoaded", () => {
     function applyFilters() {
         const checkedCollections = [];
         uniqueCollections.forEach(col => {
-            const cb = filtersContainer.querySelector(`input[type="checkbox"][value="${col}"]`);
+            const cb = filtersContainer.querySelector(
+                `input[type="checkbox"][value="${col}"]`
+            );
             if (cb && cb.checked) {
                 checkedCollections.push(col);
             }
@@ -114,28 +117,47 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const checkedParallels = [];
         uniqueParallels.forEach(par => {
-            const cb = filtersContainer.querySelector(`input[type="checkbox"][value="${par}"]`);
+            const cb = filtersContainer.querySelector(
+                `input[type="checkbox"][value="${par}"]`
+            );
             if (cb && cb.checked) {
                 checkedParallels.push(par);
             }
         });
 
-        const filteredCards = allCards.filter(card => {
+        const filtered = allCards.filter(card => {
             const matchCol = checkedCollections.includes(card.collection);
             const matchPar = checkedParallels.includes(card.parallel);
             return matchCol && matchPar;
         });
 
-        displayResults(filteredCards);
+        displayResults(filtered);
     }
 
     function displayResults(cards) {
         resultsContainer.innerHTML = "";
+        paginationDiv.innerHTML    = "";
+
         if (!cards.length) {
             resultsContainer.innerHTML = "<p>No results found</p>";
             return;
         }
-        cards.forEach(card => {
+
+        const totalCount = cards.length;
+        const totalPages = Math.ceil(totalCount / pageSize);
+
+        if (currentPage > totalPages) {
+            currentPage = totalPages;
+        }
+        if (currentPage < 1) {
+            currentPage = 1;
+        }
+
+        const startIndex = (currentPage - 1) * pageSize;
+        const endIndex   = startIndex + pageSize;
+        const pageCards  = cards.slice(startIndex, endIndex);
+
+        pageCards.forEach(card => {
             const item = document.createElement("div");
             item.classList.add("result-item");
             item.innerHTML = `
@@ -148,5 +170,48 @@ document.addEventListener("DOMContentLoaded", () => {
             `;
             resultsContainer.appendChild(item);
         });
+
+        renderPaginationControls(totalPages);
+    }
+
+    // --- Rysujemy prev/next i ewentualnie info o stronach ---
+    function renderPaginationControls(totalPages) {
+        if (totalPages <= 1) return;
+
+        const prevBtn = document.createElement("button");
+        prevBtn.textContent = "Prev";
+        prevBtn.style.marginRight = "1rem";
+        prevBtn.disabled = (currentPage === 1);
+        prevBtn.addEventListener("click", () => {
+            if (currentPage > 1) {
+                currentPage--;
+                applyFilters();
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            }
+        });
+        paginationDiv.appendChild(prevBtn);
+
+        const pageInfo = document.createElement("span");
+        pageInfo.textContent = `Page ${currentPage} of ${totalPages}`;
+        paginationDiv.appendChild(pageInfo);
+
+        const nextBtn = document.createElement("button");
+        nextBtn.textContent = "Next";
+        nextBtn.style.marginLeft = "1rem";
+        nextBtn.disabled = (currentPage === totalPages);
+        nextBtn.addEventListener("click", () => {
+            if (currentPage < totalPages) {
+                currentPage++;
+                applyFilters();
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            }
+        });
+        paginationDiv.appendChild(nextBtn);
     }
 });

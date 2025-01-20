@@ -67,6 +67,26 @@
 
 
 
+/* Filters panel */
+.filters-panel {
+    display: none;
+    margin: 1rem 0 1rem;
+}
+
+
+
+
+
+/* Pagination */
+.pagination {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+
+
+
+
 /* Media query for desktop */
 @media (min-width:1000px) {
     .search-bar {

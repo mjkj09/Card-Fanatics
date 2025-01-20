@@ -48,7 +48,7 @@
             <button class="filter-button" id="show-filters-btn">Filters</button>
         </header>
 
-        <div id="filters-panel" style="display:none; margin-top:1rem;">
+        <div class="filters-panel" id="filters-panel">
             <div id="filters-container">
                 <!-- Checkboxes dynamically from JS -->
             </div>
@@ -57,6 +57,10 @@
         <section class="results" id="results-container">
             <!-- Dynamically from JS -->
         </section>
+
+        <div class="pagination" id="pagination">
+            <!-- Prev / Next buttons dynamically from JS -->
+        </div>
     </main>
 </div>
 </body>
