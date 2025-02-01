@@ -6,23 +6,29 @@ require_once "Repository.php";
 
 class CardRepository extends Repository
 {
-    public function findOrCreateCard(string $code, int $collectionId, ?string $parallel = ''): int
+    public function findOrCreateCard(string $code, int $collectionId, ?string $parallel = '', string $playerName, string $playerSurname): int
     {
         $code = strtoupper($code);
         $parallel = strtoupper($parallel);
+        $playerName = strtoupper($playerName);
+        $playerSurname = strtoupper($playerSurname);
 
         $conn = $this->database->connect();
 
         $stmt = $conn->prepare("
-        SELECT id
-        FROM cards
-        WHERE code = :code
-          AND id_collection = :collectionId
-          AND parallel = :parallel
-    ");
+            SELECT id
+            FROM cards
+            WHERE code = :code
+              AND id_collection = :collectionId
+              AND parallel = :parallel
+              AND player_name = :playerName      
+              AND player_surname = :playerSurname  
+        ");
         $stmt->bindParam(':code', $code);
         $stmt->bindParam(':collectionId', $collectionId);
         $stmt->bindParam(':parallel', $parallel);
+        $stmt->bindParam(':playerName', $playerName);
+        $stmt->bindParam(':playerSurname', $playerSurname);
         $stmt->execute();
         $foundId = $stmt->fetchColumn();
         if ($foundId) {
@@ -30,23 +36,26 @@ class CardRepository extends Repository
         }
 
         $stmt2 = $conn->prepare("
-        INSERT INTO cards (code, id_collection, parallel)
-        VALUES (:code, :collectionId, :parallel)
-        RETURNING id
-    ");
+            INSERT INTO cards (code, id_collection, parallel, player_name, player_surname)
+            VALUES (:code, :collectionId, :parallel, :playerName, :playerSurname)
+            RETURNING id
+        ");
         $stmt2->bindParam(':code', $code);
         $stmt2->bindParam(':collectionId', $collectionId);
         $stmt2->bindParam(':parallel', $parallel);
+        $stmt2->bindParam(':playerName', $playerName);
+        $stmt2->bindParam(':playerSurname', $playerSurname);
         $stmt2->execute();
 
         return $stmt2->fetchColumn();
     }
 
-
-    public function getCardIdByCodeAndCollection(string $code, int $collectionId, ?string $parallel = ''): ?int
+    public function getCardIdByCodeAndCollection(string $code, int $collectionId, ?string $parallel = '', string $playerName, string $playerSurname): ?int
     {
         $code = strtoupper($code);
         $parallel = strtoupper($parallel);
+        $playerName = strtoupper($playerName);
+        $playerSurname = strtoupper($playerSurname);
 
         $conn = $this->database->connect();
         $stmt = $conn->prepare("
@@ -55,10 +64,14 @@ class CardRepository extends Repository
             WHERE code = :code
               AND id_collection = :collectionId
               AND parallel = :parallel
+              AND player_name = :playerName      
+              AND player_surname = :playerSurname  
         ");
         $stmt->bindParam(':code', $code);
         $stmt->bindParam(':collectionId', $collectionId);
         $stmt->bindParam(':parallel', $parallel);
+        $stmt->bindParam(':playerName', $playerName);
+        $stmt->bindParam(':playerSurname', $playerSurname);
         $stmt->execute();
 
         $id = $stmt->fetchColumn();
@@ -75,6 +88,8 @@ class CardRepository extends Repository
             uc.id_user AS user_id,
             c.code,
             c.parallel,
+            c.player_name,         
+            c.player_surname,     
             col.name AS collection,
             uc.quantity
         FROM users_cards uc
@@ -85,6 +100,8 @@ class CardRepository extends Repository
                UPPER(c.code) ILIKE :pattern
             OR UPPER(col.name) ILIKE :pattern
             OR UPPER(c.parallel) ILIKE :pattern
+            OR UPPER(c.player_name) ILIKE :pattern   
+            OR UPPER(c.player_surname) ILIKE :pattern  
           )
         ORDER BY c.code
     ";

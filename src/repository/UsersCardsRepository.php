@@ -165,7 +165,13 @@ class UsersCardsRepository extends Repository
     {
         $conn = $this->database->connect();
         $stmt = $conn->prepare("
-            SELECT c.code, c.parallel, col.name AS collection, uc.quantity
+            SELECT 
+                c.code, 
+                c.parallel, 
+                c.player_name,         
+                c.player_surname,      
+                col.name AS collection, 
+                uc.quantity
             FROM users_cards uc
             JOIN cards c ON uc.id_card = c.id
             JOIN collections col ON c.id_collection = col.id

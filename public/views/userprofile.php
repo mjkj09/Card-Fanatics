@@ -60,10 +60,11 @@
                 <?php if (!empty($tradeCards)): ?>
                     <?php foreach ($tradeCards as $card): ?>
                         <li>
-                            <?= $card['code'] ?>
-                            - <?= $card['collection'] ?>
-                            <?= $card['parallel'] ? ' - (' . $card['parallel'] . ')' : '' ?>
-                            x<?= $card['quantity'] ?>
+                            <?php
+                            echo "{$card['code']} - {$card['collection']} - {$card['player_name']} {$card['player_surname']} "
+                                . ($card['parallel'] ? ' - (' . $card['parallel'] . ')' : '')
+                                . " x{$card['quantity']}";
+                            ?>
                         </li>
                     <?php endforeach; ?>
                 <?php else: ?>
@@ -80,9 +81,10 @@
                 <?php if (!empty($wishlist)): ?>
                     <?php foreach ($wishlist as $card): ?>
                         <li>
-                            <?= $card['code'] ?>
-                            - <?= $card['collection'] ?>
-                            <?= $card['parallel'] ? ' - (' . $card['parallel'] . ')' : '' ?>
+                            <?php
+                            echo "{$card['code']} - {$card['collection']} - {$card['player_name']} {$card['player_surname']} "
+                                . ($card['parallel'] ? ' - (' . $card['parallel'] . ')' : '');
+                            ?>
                         </li>
                     <?php endforeach; ?>
                 <?php else: ?>

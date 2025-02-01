@@ -53,22 +53,24 @@ class CardController extends AppController
         }
 
         session_start();
-        if(!isset($_SESSION['user_id'])){
+        if (!isset($_SESSION['user_id'])) {
             header("Location: /");
             exit;
         }
         $userId = $_SESSION['user_id'];
 
-        $cardCode       = $_POST['cardCode']       ?? null;
+        $cardCode = $_POST['cardCode'] ?? null;
         $collectionName = $_POST['collectionName'] ?? null;
-        $parallel       = $_POST['parallel']       ?? '';
-        $quantity       = (int)($_POST['quantity'] ?? 1);
+        $parallel = $_POST['parallel'] ?? '';
+        $playerName = $_POST['playerName'] ?? null;
+        $playerSurname = $_POST['playerSurname'] ?? null;
+        $quantity = (int)($_POST['quantity'] ?? 1);
 
-        if (!$cardCode || !$collectionName) {
+        if (!$cardCode || !$collectionName || !$playerName || !$playerSurname) {
             header('Content-Type: application/json; charset=utf-8');
             echo json_encode([
-                'status'  => 'error',
-                'message' => 'Missing card code or collection'
+                'status' => 'error',
+                'message' => 'Missing card code, collection, player name or player surname'
             ]);
             return;
         }
@@ -79,18 +81,18 @@ class CardController extends AppController
             $collectionId = $this->collectionRepo->getCollectionIdByName($collectionName);
             if (!$collectionId) {
                 header('Content-Type: application/json; charset=utf-8');
-                echo json_encode(['status'=>'error','message'=>'Collection not found']);
+                echo json_encode(['status' => 'error', 'message' => 'Collection not found']);
                 return;
             }
         }
 
         if ($operation === 'add') {
-            $cardId = $this->cardRepo->findOrCreateCard($cardCode, $collectionId, $parallel);
+            $cardId = $this->cardRepo->findOrCreateCard($cardCode, $collectionId, $parallel, $playerName, $playerSurname);
         } else {
-            $cardId = $this->cardRepo->getCardIdByCodeAndCollection($cardCode, $collectionId, $parallel);
+            $cardId = $this->cardRepo->getCardIdByCodeAndCollection($cardCode, $collectionId, $parallel, $playerName, $playerSurname);
             if (!$cardId) {
                 header('Content-Type: application/json; charset=utf-8');
-                echo json_encode(['status'=>'error','message'=>'Card not found']);
+                echo json_encode(['status' => 'error', 'message' => 'Card not found']);
                 return;
             }
         }
@@ -98,13 +100,11 @@ class CardController extends AppController
         if ($operation === 'add') {
             if ($type === 'trade') {
                 $result = $this->usersCardsRepo->addCardForTrade($userId, $cardId, $quantity);
-
             } else {
                 $result = $this->usersCardsRepo->addCardToWishlistWithCheck($userId, $cardId);
             }
             header('Content-Type: application/json; charset=utf-8');
             echo json_encode($result);
-
         } else {
             if ($type === 'trade') {
                 $this->usersCardsRepo->removeCardForTrade($userId, $cardId);
@@ -113,7 +113,7 @@ class CardController extends AppController
             }
 
             header('Content-Type: application/json; charset=utf-8');
-            echo json_encode(['status'=>'success','message'=>'Card removed']);
+            echo json_encode(['status' => 'success', 'message' => 'Card removed']);
         }
     }
 
@@ -128,7 +128,7 @@ class CardController extends AppController
 
         $cards = $this->usersCardsRepo->fetchCardsByType($userId, 'trade');
         header('Content-Type: application/json; charset=utf-8');
-        echo json_encode(['status'=>'success','cards'=>$cards]);
+        echo json_encode(['status' => 'success', 'cards' => $cards]);
     }
 
     public function getWishlistCards()
@@ -142,7 +142,7 @@ class CardController extends AppController
 
         $cards = $this->usersCardsRepo->fetchCardsByType($userId, 'wishlist');
         header('Content-Type: application/json; charset=utf-8');
-        echo json_encode(['status'=>'success','cards'=>$cards]);
+        echo json_encode(['status' => 'success', 'cards' => $cards]);
     }
 
     public function updateTradeQuantity()
@@ -155,22 +155,24 @@ class CardController extends AppController
         session_start();
         $userId = $_SESSION['user_id'] ?? 1;
 
-        $cardCode       = $_POST['cardCode']       ?? null;
+        $cardCode = $_POST['cardCode'] ?? null;
         $collectionName = $_POST['collectionName'] ?? null;
-        $parallel       = $_POST['parallel']       ?? '';
-        $newQty         = (int) ($_POST['newQuantity'] ?? 1);
+        $parallel = $_POST['parallel'] ?? '';
+        $playerName = $_POST['playerName'] ?? null;
+        $playerSurname = $_POST['playerSurname'] ?? null;
+        $newQty = (int)($_POST['newQuantity'] ?? 1);
 
         $collectionId = $this->collectionRepo->getCollectionIdByName($collectionName);
         if (!$collectionId) {
             header('Content-Type: application/json; charset=utf-8');
-            echo json_encode(['status'=>'error','message'=>'Collection not found']);
+            echo json_encode(['status' => 'error', 'message' => 'Collection not found']);
             return;
         }
 
-        $cardId = $this->cardRepo->getCardIdByCodeAndCollection($cardCode, $collectionId, $parallel);
+        $cardId = $this->cardRepo->getCardIdByCodeAndCollection($cardCode, $collectionId, $parallel, $playerName, $playerSurname);
         if (!$cardId) {
             header('Content-Type: application/json; charset=utf-8');
-            echo json_encode(['status'=>'error','message'=>'Card not found']);
+            echo json_encode(['status' => 'error', 'message' => 'Card not found']);
             return;
         }
 
@@ -178,6 +180,7 @@ class CardController extends AppController
         header('Content-Type: application/json; charset=utf-8');
         echo json_encode($result);
     }
+
 
     public function searchTradeCardsAllFields()
     {
@@ -192,7 +195,7 @@ class CardController extends AppController
         header('Content-Type: application/json; charset=utf-8');
         echo json_encode([
             'status' => 'success',
-            'cards'  => $cards
+            'cards' => $cards
         ]);
     }
 }

@@ -43,6 +43,12 @@
                 <input type="text" id="collectionName" name="collectionName" list="collectionSuggestions" required>
                 <datalist id="collectionSuggestions"></datalist>
 
+                <label for="playerName">Player Name *</label>
+                <input type="text" id="playerName" name="playerName" required>
+
+                <label for="playerSurname">Player Surname *</label>
+                <input type="text" id="playerSurname" name="playerSurname" required>
+
                 <label for="parallel">Parallel (optional)</label>
                 <input type="text" id="parallel" name="parallel" placeholder="e.g. Blue Crystal">
 

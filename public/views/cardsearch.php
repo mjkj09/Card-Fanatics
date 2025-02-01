@@ -33,7 +33,7 @@
         <header class="search-bar">
             <form id="search-form">
                 <input
-                        placeholder="Search by code, collection, or parallel"
+                        placeholder="Search by code, collection, player name or parallel"
                         type="text"
                         name="search"
                         id="search-input"

@@ -168,6 +168,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 <div class="result-item__details">
                     <p>Code: ${card.code}</p>
                     <p>Collection: ${card.collection}</p>
+                    <p>Player: ${card.player_name} ${card.player_surname}</p>
                     <p>Parallel: ${card.parallel || '-'}</p>
                     <p>Quantity: ${card.quantity}</p>
                     <button class="profile-button"
@@ -179,7 +180,6 @@ document.addEventListener("DOMContentLoaded", () => {
             `;
             resultsContainer.appendChild(item);
         });
-
 
         renderPaginationControls(totalPages);
     }

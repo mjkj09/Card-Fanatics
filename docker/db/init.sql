@@ -1,59 +1,47 @@
-create table users
+-- init.sql
+
+CREATE TABLE users
 (
-    id         serial
-        primary key,
-    email      varchar(255)            not null
-        unique,
-    password   varchar(255)            not null,
-    created_at timestamp default now() not null
+    id         serial PRIMARY KEY,
+    email      varchar(255)            NOT NULL UNIQUE,
+    password   varchar(255)            NOT NULL,
+    created_at timestamp DEFAULT now() NOT NULL
 );
 
-create table users_details
+CREATE TABLE users_details
 (
-    id        serial
-        primary key,
-    id_user   integer      not null
-        references users
-            on delete cascade,
-    name      varchar(100) not null,
-    surname   varchar(100) not null,
+    id        serial PRIMARY KEY,
+    id_user   integer     NOT NULL REFERENCES users ON DELETE CASCADE,
+    name      varchar(50) NOT NULL,
+    surname   varchar(50) NOT NULL,
     phone     varchar(20),
-    instagram varchar(100)
+    instagram varchar(30)
 );
 
-create table collections
+CREATE TABLE collections
 (
-    id   serial
-        primary key,
-    name varchar(100) not null
-        unique
+    id   serial PRIMARY KEY,
+    name varchar(100) NOT NULL UNIQUE
 );
 
-create table cards
+CREATE TABLE cards
 (
-    id            serial
-        primary key,
-    code          varchar(50) not null,
-    id_collection integer     not null
-        references collections
-            on delete cascade,
-    parallel      varchar(50),
-    constraint cards_code_collection_parallel_uk
-        unique (code, id_collection, parallel)
+    id             serial PRIMARY KEY,
+    code           varchar(20) NOT NULL,
+    id_collection  integer     NOT NULL REFERENCES collections ON DELETE CASCADE,
+    parallel       varchar(30),
+    player_name    varchar(50) NOT NULL,
+    player_surname varchar(50) NOT NULL,
+    CONSTRAINT cards_code_collection_parallel_player_uk
+        UNIQUE (code, id_collection, parallel, player_name, player_surname)
 );
 
-create table users_cards
+CREATE TABLE users_cards
 (
-    id        serial
-        primary key,
-    id_user   integer           not null
-        references users
-            on delete cascade,
-    id_card   integer           not null
-        references cards
-            on delete cascade,
-    card_type varchar(50)       not null,
-    quantity  integer default 1 not null,
-    constraint unique_user_card
-        unique (id_user, id_card, card_type)
+    id        serial PRIMARY KEY,
+    id_user   integer           NOT NULL REFERENCES users ON DELETE CASCADE,
+    id_card   integer           NOT NULL REFERENCES cards ON DELETE CASCADE,
+    card_type varchar(50)       NOT NULL,
+    quantity  integer DEFAULT 1 NOT NULL,
+    CONSTRAINT unique_user_card UNIQUE (id_user, id_card, card_type)
 );
