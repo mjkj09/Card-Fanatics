@@ -12,7 +12,7 @@ require_once __DIR__ . "/../exceptions/UserNotFoundException.php";
 
 class SecurityController extends AppController
 {
-    public function login()
+    public function login(): void
     {
         $userRepository = new UserRepository();
 
@@ -27,22 +27,25 @@ class SecurityController extends AppController
         try {
             $user = $userRepository->getUserByEmail($email);
         } catch (UserNotFoundException $e) {
-            return $this->render('login', [
+            $this->render('login', [
                 'messages' => ['⚠ ' . $e->getMessage()]
             ]);
+            return;
         }
 
         if (!password_verify($password, $user->getPassword())) {
-            return $this->render('login', [
+            $this->render('login', [
                 'messages' => ['⚠ Wrong password!']
             ]);
+            return;
         }
 
         if (UserRepository::isUserBanned($user->getId())) {
             $banReason = UserRepository::getBanReason($user->getId());
-            return $this->render('login', [
+            $this->render('login', [
                 'messages' => ["⚠ This account is banned! <br><br> Reason: {$banReason}"]
             ]);
+            return;
         }
 
 
@@ -54,7 +57,7 @@ class SecurityController extends AppController
         exit;
     }
 
-    public function registerUser()
+    public function registerUser(): void
     {
         $userRepository = new UserRepository();
         if ($this->isGet()) {
@@ -68,19 +71,22 @@ class SecurityController extends AppController
         $password = $_POST['password'] ?? '';
 
         if (!$name || !$surname || !$email || !$password) {
-            return $this->render('register', [
+            $this->render('register', [
                 'messages' => ['⚠ Please fill all fields!']
             ]);
+            return;
         }
 
         try {
             $existing = $userRepository->getUserByEmail($email);
             if (UserRepository::isUserBanned($existing->getId())) {
-                return $this->render('register', [
+                $this->render('register', [
                     'messages' => ["⚠ This account is banned!"]
                 ]);
+                return;
             }
-            return $this->render('register', ['messages' => ['⚠ Email already in use!']]);
+            $this->render('register', ['messages' => ['⚠ Email already in use!']]);
+            return;
         } catch (UserNotFoundException $e) {
 
         }
@@ -121,14 +127,16 @@ class SecurityController extends AppController
             $conn->commit();
         } catch (\Exception $ex) {
             $conn->rollBack();
-            return $this->render('register', [
+            $this->render('register', [
                 'messages' => ["Registration error: " . $ex->getMessage()]
             ]);
+            return;
         }
 
-        return $this->render('login', [
+        $this->render('login', [
             'messages' => ['Account created! You can log in now.']
         ]);
+        return;
     }
 
     public function logout()

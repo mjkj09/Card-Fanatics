@@ -3,8 +3,6 @@
 namespace controllers;
 
 use repository\UserRepository;
-use repository\CardRepository;
-use repository\UsersCardsRepository;
 
 require_once 'AppController.php';
 require_once __DIR__ . '/../repository/UserRepository.php';

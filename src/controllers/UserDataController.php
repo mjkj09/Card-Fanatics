@@ -62,8 +62,7 @@ class UserDataController extends AppController
 
         session_start();
         $userId = $_SESSION['user_id'] ?? 1;
-
-        // Pobierz dane z POST
+        
         $name = $_POST['name'] ?? '';
         $surname = $_POST['surname'] ?? '';
         $phone = $_POST['phone'] ?? '';
