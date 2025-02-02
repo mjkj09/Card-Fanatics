@@ -62,12 +62,14 @@ th {
     margin-top: 0;
 }
 
-.ban-btn {
+.ban-btn,
+.confirm-ban-btn {
     background-color: red;
     color: #fff;
 }
 
-.ban-btn:hover {
+.ban-btn:hover,
+.confirm-ban-btn:hover {
     background-color: #cc0000;
 }
 
@@ -83,7 +85,8 @@ th {
         padding: 1rem 1.5rem;
     }
 
-    .ban-btn {
+    .ban-btn,
+    .confirm-ban-btn {
         margin-top: 0;
     }
 

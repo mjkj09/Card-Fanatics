@@ -62,6 +62,7 @@ if (isset($_SESSION['user_id'])) {
                     <tbody id="users-table-body">
                     <?php if (isset($allUsers) && is_array($allUsers)): ?>
                         <?php foreach ($allUsers as $user): ?>
+                            <?php if ($user['id'] == $_SESSION['user_id']) continue; // pomiń aktualnego admina ?>
                             <tr>
                                 <td><?= $user['id'] ?></td>
                                 <td><?= $user['name'] . ' ' . $user['surname'] ?></td>
@@ -72,7 +73,6 @@ if (isset($_SESSION['user_id'])) {
                                                 onclick="window.open('userProfile?userId=<?= $user['id'] ?>','_blank')">
                                             View Profile
                                         </button>
-
                                         <?php if (!$user['is_banned']): ?>
                                             <button class="ban-btn small-button"
                                                     data-user-id="<?= $user['id'] ?>">
@@ -107,7 +107,7 @@ if (isset($_SESSION['user_id'])) {
         <br>
         <textarea name="banReason" id="banReason" rows="3" cols="50"></textarea>
         <br><br>
-        <button class="ban-btn small-button" id="banConfirmBtn">Confirm Ban</button>
+        <button class="confirm-ban-btn small-button" id="banConfirmBtn">Confirm Ban</button>
         <button class="small-button" id="banCancelBtn">Cancel</button>
     </div>
 </div>
