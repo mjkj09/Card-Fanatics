@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Panel</title>
     <link rel="stylesheet" href="public/css/common.css">
+    <link rel="stylesheet" href="public/css/admindashboard.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;900&display=swap" rel="stylesheet">
     <script src="public/js/menu.js"></script>
     <script src="public/js/admindashboard.js" defer></script>
@@ -12,7 +13,9 @@
 </head>
 <body>
 <?php
+
 use repository\UserRepository;
+
 session_start();
 $isAdmin = false;
 if (isset($_SESSION['user_id'])) {
@@ -46,55 +49,65 @@ if (isset($_SESSION['user_id'])) {
 
         <section>
             <p>Here you can manage users, cards, etc.</p>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th class="actions-header">Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody id="users-table-body">
+                    <?php if (isset($allUsers) && is_array($allUsers)): ?>
+                        <?php foreach ($allUsers as $user): ?>
+                            <tr>
+                                <td><?= $user['id'] ?></td>
+                                <td><?= $user['name'] . ' ' . $user['surname'] ?></td>
+                                <td><?= $user['email'] ?></td>
+                                <td class="actions-cell">
+                                    <div class="action-buttons-container">
+                                        <button class="profile-button small-button"
+                                                onclick="window.open('userProfile?userId=<?= $user['id'] ?>','_blank')">
+                                            View Profile
+                                        </button>
 
-            <table style="color:#f6fcdf; margin-top:20px;">
-                <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Banned?</th>
-                    <th>Actions</th>
-                </tr>
-                </thead>
-                <tbody id="users-table-body">
-                <?php if(isset($allUsers) && is_array($allUsers)): ?>
-                    <?php foreach ($allUsers as $u): ?>
+                                        <?php if (!$user['is_banned']): ?>
+                                            <button class="ban-btn small-button"
+                                                    data-user-id="<?= $user['id'] ?>">
+                                                Ban
+                                            </button>
+                                        <?php else: ?>
+                                            <button class="ban-btn small-button"
+                                                    disabled
+                                                    data-user-id="<?= $user['id'] ?>">
+                                                Ban
+                                            </button>
+                                        <?php endif; ?>
+                                    </div>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php else: ?>
                         <tr>
-                            <td><?= $u['id'] ?></td>
-                            <td><?= $u['name'] . ' ' . $u['surname'] ?></td>
-                            <td><?= $u['email'] ?></td>
-                            <td><?= $u['is_banned'] ? 'YES' : 'NO' ?></td>
-                            <td>
-                                <button class="profile-button small-button" onclick="window.open('userProfile?userId=<?= $u['id'] ?>','_blank')">
-                                    View Profile
-                                </button>
-
-                                <?php if (!$u['is_banned']): ?>
-                                    <button class="ban-btn small-button" data-user-id="<?= $u['id'] ?>">
-                                        Ban
-                                    </button>
-                                <?php else: ?>
-                                    (Already banned)
-                                <?php endif; ?>
-                            </td>
+                            <td colspan="4">No users found.</td>
                         </tr>
-                    <?php endforeach; ?>
-                <?php else: ?>
-                    <tr><td colspan="5">No users found.</td></tr>
-                <?php endif; ?>
-                </tbody>
-            </table>
+                    <?php endif; ?>
+                    </tbody>
+                </table>
+            </div>
         </section>
     </main>
 
-    <div id="ban-popup" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); background:#333; padding:20px; border:1px solid #777; z-index:999;">
+    <div id="ban-popup" class="ban-popup">
         <h3>Ban User</h3>
         <input type="hidden" id="banUserId" value="">
         <label for="banReason">Reason:</label>
-        <textarea id="banReason" rows="3" cols="30"></textarea>
+        <br>
+        <textarea name="banReason" id="banReason" rows="3" cols="50"></textarea>
         <br><br>
-        <button class="small-button" id="banConfirmBtn">Confirm Ban</button>
+        <button class="ban-btn small-button" id="banConfirmBtn">Confirm Ban</button>
         <button class="small-button" id="banCancelBtn">Cancel</button>
     </div>
 </div>

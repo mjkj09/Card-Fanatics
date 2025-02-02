@@ -6,7 +6,6 @@
     <title>User Profile</title>
     <link rel="stylesheet" href="public/css/common.css">
     <link rel="stylesheet" href="public/css/cardlist.css">
-    <link rel="stylesheet" href="public/css/userprofile.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;900&display=swap" rel="stylesheet">
     <script src="public/js/menu.js"></script>
     <script src="https://kit.fontawesome.com/4dc72001e9.js" crossorigin="anonymous"></script>
