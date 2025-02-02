@@ -189,8 +189,9 @@ class CardController extends AppController
             return;
         }
 
+        $currentUserId = $_SESSION['user_id'] ?? null;
         $query = $_GET['query'] ?? '';
-        $cards = $this->cardRepo->searchTradeCardsAllFields($query);
+        $cards = $this->cardRepo->searchTradeCardsAllFields($query, $currentUserId);
 
         header('Content-Type: application/json; charset=utf-8');
         echo json_encode([

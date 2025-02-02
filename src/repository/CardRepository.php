@@ -78,7 +78,7 @@ class CardRepository extends Repository
         return $id ?: null;
     }
 
-    public function searchTradeCardsAllFields(string $query): array
+    public function searchTradeCardsAllFields(string $query, ?int $excludeUserId = null): array
     {
         $conn = $this->database->connect();
         $pattern = '%'.strtoupper($query).'%';
@@ -100,14 +100,24 @@ class CardRepository extends Repository
                UPPER(c.code) ILIKE :pattern
             OR UPPER(col.name) ILIKE :pattern
             OR UPPER(c.parallel) ILIKE :pattern
-            OR UPPER(c.player_name) ILIKE :pattern   
-            OR UPPER(c.player_surname) ILIKE :pattern  
+            OR UPPER(c.player_name) ILIKE :pattern
+            OR UPPER(c.player_surname) ILIKE :pattern
           )
-        ORDER BY c.code
     ";
+
+        if ($excludeUserId) {
+            $sql .= " AND uc.id_user != :excludeUser ";
+        }
+
+        $sql .= " ORDER BY c.code ";
 
         $stmt = $conn->prepare($sql);
         $stmt->bindValue(':pattern', $pattern);
+
+        if ($excludeUserId) {
+            $stmt->bindValue(':excludeUser', $excludeUserId, \PDO::PARAM_INT);
+        }
+
         $stmt->execute();
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
