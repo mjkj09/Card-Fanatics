@@ -11,48 +11,43 @@
     <title>Login Page</title>
 </head>
 <body>
-    <div class="login-page">
+<div class="login-page">
+    <section class="login-page__left-panel">
+        <img src="public/img/logo+text.svg" class="left-panel__logo" alt="Logo">
+    </section>
+    <section class="login-page__right-panel">
+        <div class="login-box">
+            <h2 class="login-box__title">Login</h2>
+            <p class="login-box__subtitle">Welcome back! Please login to your account.</p>
+            <form class="login-box__form" action="login" method="POST">
+                <div class="messages">
+                    <?php if (isset($messages) && !empty($messages)): ?>
+                        <div class="messages">
+                            <?php foreach ($messages as $message): ?>
+                                <p><?= $message ?></p>
+                            <?php endforeach; ?>
+                        </div>
+                    <?php endif; ?>
+                </div>
+                <div class="form__input-group">
+                    <i class="fa-solid fa-envelope fa-sm"></i>
+                    <input type="email" id="email" name="email" class="form__input" placeholder="Email" required>
+                </div>
 
-        <section class="login-page__left-panel">
-            <img src="public/img/logo+text.svg" class="left-panel__logo" alt="Logo">
-        </section>
-
-        <section class="login-page__right-panel">
-            <div class="login-box">
-                <h2 class="login-box__title">Login</h2>
-                <p class="login-box__subtitle">Welcome back! Please login to your account.</p>
-                <form class="login-box__form" action="login" method="POST">
-
-                    <div class="messages">
-                        <?php if (isset($messages) && !empty($messages)): ?>
-                            <div class="messages">
-                                <?php foreach ($messages as $message): ?>
-                                    <p><?= $message ?></p>
-                                <?php endforeach; ?>
-                            </div>
-                        <?php endif; ?>
-                    </div>
-
-                    <div class="form__input-group">
-                        <i class="fa-solid fa-envelope fa-sm" style="color: #f6fcdf;"></i>
-                        <input type="email" id="email" name="email" class="form__input" placeholder="Email" required>
-                    </div>
-                    
-                    <div class="form__input-group">
-                        <i class="fa-solid fa-lock fa-sm" style="color: #f6fcdf;"></i>
-                        <input type="password" id="password" name="password" class="form__input" placeholder="Your password" required>
-                    </div>
-
-                    <button type="submit" class="form__button">Login</button>
-                </form>
-
-                <p class="login-box__signup-text">
-                    New User?
-                    <a href="register" class="login-box__signup-link">Sign up</a>
-                </p>
-            </div>
-        </section>
-
-    </div>
+                <div class="form__input-group" id="login-password-group">
+                    <i class="fa-solid fa-lock fa-sm"></i>
+                    <input type="password" id="login-password-input" name="password" class="form__input" placeholder="Your password" required>
+                    <i class="fa-solid fa-eye fa-sm" id="login-toggle-password"></i>
+                </div>
+                <button type="submit" class="form__button">Login</button>
+            </form>
+            <p class="login-box__signup-text">
+                New User?
+                <a href="register" class="login-box__signup-link">Sign up</a>
+            </p>
+        </div>
+    </section>
+</div>
+<script src="public/js/login.js" defer></script>
 </body>
 </html>
