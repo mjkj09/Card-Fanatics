@@ -18,7 +18,7 @@
     cursor: pointer;
     text-align: center;
     min-width: 30px; /* nieco szerzej niż Remove */
-    margin-left: 0.5rem;
+    margin-right: 0.5rem;
 }
 
 .qty-down:hover,
@@ -50,6 +50,7 @@
     padding: 1rem;
     border-radius: 5px;
     display: flex;
+    flex-direction: column;
     align-items: center;
     color: #f6fcdf;
     gap: 1rem;
@@ -71,4 +72,10 @@
 
 .card-list li .remove-button:hover {
     background-color: #31511e;
+}
+
+@media (min-width:1000px) {
+    .card-list li {
+        flex-direction: row;
+    }
 }

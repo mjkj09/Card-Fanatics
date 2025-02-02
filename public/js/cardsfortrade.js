@@ -81,10 +81,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const li = document.createElement("li");
         li.innerHTML = `
-            <span>${code} - ${collection} - ${playerLabel} ${parallelLabel} x${qtyNum}</span>
-            <button class="qty-down">-</button>
-            <button class="qty-up">+</button>
-            <button class="remove-button">Remove</button>
+            <span style="display: inline-block">${code} - ${collection} - ${playerLabel} ${parallelLabel} x${qtyNum}</span>
+            <div style="display: flex">
+                <button class="qty-down">-</button>
+                <button class="qty-up">+</button>
+                <button class="remove-button">Remove</button>
+            </div>
         `;
 
         const downBtn = li.querySelector(".qty-down");
