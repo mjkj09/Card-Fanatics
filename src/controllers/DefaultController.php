@@ -46,6 +46,12 @@ class DefaultController extends AppController
         $this->render('userprofile');
     }
 
+    public function admindashboard()
+    {
+        $this->ensureLoggedIn();
+        $this->render('admindashboard');
+    }
+
     private function ensureLoggedIn()
     {
         session_start();

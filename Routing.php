@@ -4,6 +4,7 @@ require_once __DIR__ . '/src/controllers/UserDataController.php';
 require_once __DIR__ . '/src/controllers/SecurityController.php';
 require_once __DIR__ . '/src/controllers/DefaultController.php';
 require_once __DIR__ . '/src/controllers/CardController.php';
+require_once __DIR__ . '/src/controllers/AdminController.php';
 
 class Routing
 {

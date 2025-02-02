@@ -25,6 +25,9 @@ Routing::post('updateTradeQuantity', 'CardController');
 Routing::get('getUserCollections', 'UserDataController');
 Routing::get('searchTradeCardsAllFields', 'CardController');
 Routing::get('userProfile', 'UserDataController');
+Routing::get('admindashboard', 'AdminController');
+Routing::post('banUser', 'AdminController');
+
 
 Routing::post('login', 'SecurityController');
 Routing::get('registerUser', 'SecurityController');

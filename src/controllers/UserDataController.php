@@ -122,6 +122,11 @@ class UserDataController extends AppController
             return;
         }
 
+        if (UserRepository::isUserBanned((int)$userIdToShow)) {
+            echo "This user is banned!";
+            return;
+        }
+
         $user = $this->userRepository->getUserById((int)$userIdToShow);
 
         if (!$user) {

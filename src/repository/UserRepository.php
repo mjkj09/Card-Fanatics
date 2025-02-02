@@ -43,6 +43,9 @@ class UserRepository extends Repository
         return $user;
     }
 
+    /**
+     * @throws UserNotFoundException
+     */
     public function getUserByEmail(string $email): User
     {
         $conn = $this->database->connect();
@@ -125,5 +128,115 @@ class UserRepository extends Repository
     public function getConnection()
     {
         return $this->database->connect();
+    }
+
+    public static function isUserAdmin(int $userId): bool
+    {
+        $db = new self();
+        $conn = $db->database->connect();
+
+        $stmt = $conn->prepare("
+            SELECT 1
+            FROM users_roles ur
+            JOIN roles r ON ur.id_role = r.id
+            WHERE ur.id_user = :userId
+              AND r.role_name = 'admin'
+            LIMIT 1
+        ");
+        $stmt->bindParam(':userId', $userId);
+        $stmt->execute();
+
+        return (bool) $stmt->fetchColumn();
+    }
+
+    public static function isUserBanned(int $userId): bool
+    {
+        $db = new self();
+        $conn = $db->database->connect();
+        $stmt = $conn->prepare("
+            SELECT 1
+            FROM bans
+            WHERE id_user = :userId
+            LIMIT 1
+        ");
+        $stmt->bindParam(':userId', $userId);
+        $stmt->execute();
+        return (bool) $stmt->fetchColumn();
+    }
+
+    public static function getBanReason(int $userId): ?string
+    {
+        $db = new self();
+        $conn = $db->database->connect();
+        $stmt = $conn->prepare("
+            SELECT reason
+            FROM bans
+            WHERE id_user = :userId
+            ORDER BY banned_at DESC
+            LIMIT 1
+        ");
+        $stmt->bindParam(':userId', $userId);
+        $stmt->execute();
+
+        $reason = $stmt->fetchColumn();
+        return $reason ?: null;
+    }
+
+    public function getAllUsersForAdmin(): array
+    {
+        $conn = $this->database->connect();
+        $sql = "
+            SELECT
+                u.id,
+                u.email,
+                COALESCE(d.name, '') as name,
+                COALESCE(d.surname, '') as surname,
+                CASE
+                    WHEN b.id_user IS NOT NULL THEN true
+                    ELSE false
+                END as is_banned
+            FROM users u
+            LEFT JOIN users_details d ON u.id = d.id_user
+            LEFT JOIN bans b ON u.id = b.id_user
+            ORDER BY u.created_at DESC
+        ";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function banUser(int $userId, string $reason): array
+    {
+        $conn = $this->getConnection();
+        try {
+            $conn->beginTransaction();
+
+            $stmtBan = $conn->prepare("
+                INSERT INTO bans (id_user, reason)
+                VALUES (:userId, :reason)
+            ");
+            $stmtBan->bindParam(':userId', $userId);
+            $stmtBan->bindParam(':reason', $reason);
+            $stmtBan->execute();
+
+            $stmtDel = $conn->prepare("
+                DELETE FROM users_cards
+                WHERE id_user = :userId
+            ");
+            $stmtDel->bindParam(':userId', $userId);
+            $stmtDel->execute();
+
+            $conn->commit();
+            return [
+                'status' => 'success',
+                'message' => "User $userId banned successfully"
+            ];
+        } catch (\Exception $e) {
+            $conn->rollBack();
+            return [
+                'status' => 'error',
+                'message' => 'Ban failed: '.$e->getMessage()
+            ];
+        }
     }
 }

@@ -11,6 +11,15 @@
     <script src="https://kit.fontawesome.com/4dc72001e9.js" crossorigin="anonymous"></script>
 </head>
 <body>
+<?php
+use repository\UserRepository;
+
+session_start();
+$isAdmin = false;
+if (isset($_SESSION['user_id'])) {
+    $isAdmin = UserRepository::isUserAdmin($_SESSION['user_id']);
+}
+?>
 <div class="main-page">
     <nav class="navbar">
         <i class="fa-solid fa-bars" id="menu-toggle" style="color: #f6fcdf;"></i>
@@ -24,6 +33,9 @@
             <li><a href="personaldata">MY PERSONAL DATA</a></li>
             <li><a href="cardsfortrade">CARDS FOR TRADE</a></li>
             <li><a href="wishlist">WISHLIST</a></li>
+            <?php if ($isAdmin):?>
+                <li><a href="admindashboard">ADMIN DASHBOARD</a></li>
+            <?php endif; ?>
             <li><a href="logout">LOGOUT</a></li>
         </ul>
     </div>

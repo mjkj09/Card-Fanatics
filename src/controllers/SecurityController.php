@@ -38,6 +38,14 @@ class SecurityController extends AppController
             ]);
         }
 
+        if (UserRepository::isUserBanned($user->getId())) {
+            $banReason = UserRepository::getBanReason($user->getId());
+            return $this->render('login', [
+                'messages' => ["⚠ This account is banned! <br><br> Reason: {$banReason}"]
+            ]);
+        }
+
+
         session_start();
         $_SESSION['user_id'] = $user->getId();
 
@@ -54,9 +62,9 @@ class SecurityController extends AppController
             return;
         }
 
-        $name     = $_POST['name'] ?? '';
-        $surname  = $_POST['surname'] ?? '';
-        $email    = $_POST['email'] ?? '';
+        $name = $_POST['name'] ?? '';
+        $surname = $_POST['surname'] ?? '';
+        $email = $_POST['email'] ?? '';
         $password = $_POST['password'] ?? '';
 
         if (!$name || !$surname || !$email || !$password) {
@@ -67,10 +75,16 @@ class SecurityController extends AppController
 
         try {
             $existing = $userRepository->getUserByEmail($email);
+            if (UserRepository::isUserBanned($existing->getId())) {
+                return $this->render('register', [
+                    'messages' => ["⚠ This account is banned!"]
+                ]);
+            }
             return $this->render('register', ['messages' => ['⚠ Email already in use!']]);
         } catch (UserNotFoundException $e) {
 
         }
+
 
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
@@ -95,6 +109,15 @@ class SecurityController extends AppController
             $stmt2->bindParam(':surname', $surname);
             $stmt2->execute();
 
+            $stmtRole = $conn->prepare("
+                INSERT INTO users_roles (id_user, id_role)
+                SELECT :userId, r.id
+                FROM roles r
+                WHERE r.role_name = 'user'
+            ");
+            $stmtRole->bindParam(':userId', $newUserId);
+            $stmtRole->execute();
+
             $conn->commit();
         } catch (\Exception $ex) {
             $conn->rollBack();
@@ -104,7 +127,7 @@ class SecurityController extends AppController
         }
 
         return $this->render('login', [
-            'messages'=>['Account created! You can log in now.']
+            'messages' => ['Account created! You can log in now.']
         ]);
     }
 
