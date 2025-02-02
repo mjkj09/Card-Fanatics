@@ -32,7 +32,12 @@ html {
     color: #f6fcdf;
 }
 
-
+.content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%
+}
 
 
 
@@ -189,11 +194,28 @@ html {
     border-radius: 5px;
     font-weight: 700;
     cursor: pointer;
-    
+    transition: all 0.3s ease-in-out;
 }
 
 .form-container button:hover {
     background-color: #31511e;
+}
+
+.small-button {
+    background-color: #859f3d;
+    color: #f6fcdf;
+    border: none;
+    border-radius: 5px;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    margin-top: 1rem;
+    transition: all 0.3s ease-in-out;
+    transition-property: color, background-color;
+}
+
+.small-button:hover {
+    background-color: #f6fcdf;
+    color: #1a1a19;
 }
 
 .messages {

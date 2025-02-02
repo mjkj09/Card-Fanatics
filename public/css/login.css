@@ -76,6 +76,7 @@
 .form__input-group i.fa-eye {
     right: 10px;
     cursor: pointer;
+    transition: all 0.3s ease-in-out;
 }
 
 .form__input-group i.fa-eye:hover,
@@ -86,6 +87,7 @@
 .form__input-group i.fa-eye-slash {
     right: 9.125px;
     cursor: pointer;
+    transition: all 0.3s ease-in-out;
 }
 
 .form__input {
@@ -124,7 +126,8 @@
     font-weight: 700;
     border: none;
     border-radius: 5px;
-    cursor: pointer
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
 }
 
 .form__button:hover {

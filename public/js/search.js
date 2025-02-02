@@ -66,11 +66,14 @@ document.addEventListener("DOMContentLoaded", () => {
         uniqueParallels = [...new Set(cards.map(c => c.parallel))];
 
         const colH3 = document.createElement("h3");
+        colH3.classList.add("filters-title");
+        colH3.classList.add("filters-title-collections");
         colH3.textContent = "Collections";
         filtersContainer.appendChild(colH3);
 
         uniqueCollections.forEach(col => {
             const label = document.createElement("label");
+            label.classList.add("filters-label");
             const cb = document.createElement("input");
             cb.type = "checkbox";
             cb.value = col;
@@ -82,11 +85,14 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
         const parH3 = document.createElement("h3");
+        parH3.classList.add("filters-title");
+        parH3.classList.add("filters-title-parallels");
         parH3.textContent = "Parallels";
         filtersContainer.appendChild(parH3);
 
         uniqueParallels.forEach(par => {
             const label = document.createElement("label");
+            label.classList.add("filters-label");
             const cb = document.createElement("input");
             cb.type = "checkbox";
             cb.value = par;
@@ -98,6 +104,8 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
         const applyBtn = document.createElement("button");
+        applyBtn.classList.add("small-button");
+        applyBtn.classList.add("apply-filters-btn");
         applyBtn.textContent = "Apply filters";
         filtersContainer.appendChild(applyBtn);
 
@@ -166,12 +174,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
             item.innerHTML = `
                 <div class="result-item__details">
-                    <p>Code: ${card.code}</p>
-                    <p>Collection: ${card.collection}</p>
-                    <p>Player: ${card.player_name} ${card.player_surname}</p>
-                    <p>Parallel: ${card.parallel || '-'}</p>
-                    <p>Quantity: ${card.quantity}</p>
-                    <button class="profile-button"
+                    <div>
+                        <p>Code: ${card.code}</p>
+                        <p>Collection: ${card.collection}</p>
+                        <p>Player: ${card.player_name} ${card.player_surname}</p>
+                        <p>Parallel: ${card.parallel || '-'}</p>
+                        <p>Quantity: ${card.quantity}</p>
+                    </div>
+                    <button class="profile-button small-button"
                             onclick="window.open('userProfile?userId=${card.user_id}', '_blank');"
                     >
                         View Profile

@@ -58,7 +58,7 @@
                 </i>
             </form>
 
-            <button class="filter-button" id="show-filters-btn">Filters</button>
+            <button class="filter-button small-button" id="show-filters-btn">Filters</button>
         </header>
 
         <div class="filters-panel" id="filters-panel">

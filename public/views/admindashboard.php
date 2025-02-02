@@ -66,12 +66,12 @@ if (isset($_SESSION['user_id'])) {
                             <td><?= $u['email'] ?></td>
                             <td><?= $u['is_banned'] ? 'YES' : 'NO' ?></td>
                             <td>
-                                <button class="profile-button" onclick="window.open('userProfile?userId=<?= $u['id'] ?>','_blank')">
+                                <button class="profile-button small-button" onclick="window.open('userProfile?userId=<?= $u['id'] ?>','_blank')">
                                     View Profile
                                 </button>
 
                                 <?php if (!$u['is_banned']): ?>
-                                    <button class="ban-btn" data-user-id="<?= $u['id'] ?>">
+                                    <button class="ban-btn small-button" data-user-id="<?= $u['id'] ?>">
                                         Ban
                                     </button>
                                 <?php else: ?>
@@ -88,14 +88,14 @@ if (isset($_SESSION['user_id'])) {
         </section>
     </main>
 
-    <div id="ban-popup" style="display:none; position:fixed; top:30%; left:30%; background:#333; padding:20px; border:1px solid #777; z-index:999;">
+    <div id="ban-popup" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); background:#333; padding:20px; border:1px solid #777; z-index:999;">
         <h3>Ban User</h3>
         <input type="hidden" id="banUserId" value="">
         <label for="banReason">Reason:</label>
         <textarea id="banReason" rows="3" cols="30"></textarea>
         <br><br>
-        <button id="banConfirmBtn">Confirm Ban</button>
-        <button id="banCancelBtn">Cancel</button>
+        <button class="small-button" id="banConfirmBtn">Confirm Ban</button>
+        <button class="small-button" id="banCancelBtn">Cancel</button>
     </div>
 </div>
 </body>
